@@ -15,3 +15,13 @@ class User(AbstractUser):
     )
     def __str__(self):
         return self.email
+
+class DeliveryAgent(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    delivery_start_time = models.TimeField()
+    delivery_end_time = models.TimeField()
+    adress = models.TextField()
+    phone_number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.phone_number}"
