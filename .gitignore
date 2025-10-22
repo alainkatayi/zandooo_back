@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+.env.*
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Migrations
+**/migrations/*.py
+**/migrations/*.pyc
+!*/migrations/__init__.py
+
+# Static & media files (if generated during runtime)
+staticfiles/
+media/
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+
+# mypy, Pyre, Pyright
+.mypy_cache/
+.pyre/
+.pyright/
+
+# Pytest
+.pytest_cache/
+
+# JetBrains (PyCharm, etc.)
+.idea/
+
+# Build
+build/
+dist/
+*.egg-info/
