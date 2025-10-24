@@ -17,7 +17,7 @@ class User(AbstractUser):
         return self.email
 
 class DeliveryAgent(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='delivery_profile')
     delivery_start_time = models.TimeField()
     delivery_end_time = models.TimeField()
     adress = models.TextField()
