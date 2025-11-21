@@ -47,13 +47,16 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         
         #gestion de response en fonction du role
+        
 
         #si le user est un delivery, on ajoute son profile de delivery dans la reponse
         if self.user.role == 'delivery':
             delivery_profile = self.user.delivery_profile
-            data = {
+            user_data = {
                 'id': self.user.id,
                 'username': self.user.username,
+                'first_name': self.user.first_name,
+                'last_name': self.user.last_name,
                 'email': self.user.email,
                 'role': self.user.role,
                 'delivery_Agent_Profile': {
@@ -63,6 +66,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                     'phone_number': delivery_profile.phone_number,
                 }
             }
+            data.update({'user': user_data})
             return data
         #sinon on renvoi juste les infos de base du user
         else:
@@ -74,3 +78,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                 }
             })
         return data
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role']
