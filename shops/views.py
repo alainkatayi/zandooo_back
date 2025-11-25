@@ -40,3 +40,11 @@ class ShopUpdatedView(APIView):
                 return Response({
                     "Error": serializer.errors
                 }, status=status.HTTP_400_BAD_REQUEST)
+            
+class ShopOneView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self,request,pk):
+        shop = get_object_or_404(Shop,pk=pk)
+        serializer = ShopSerializer(shop)
+        return Response(serializer.data)
