@@ -48,3 +48,18 @@ class ShopOneView(APIView):
         shop = get_object_or_404(Shop,pk=pk)
         serializer = ShopSerializer(shop)
         return Response(serializer.data)
+    
+class ShopDeletedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        shop =get_object_or_404(Shop, pk=pk)
+        if shop.owner != request.user:
+            return Response({
+                "Message": "You do not have the right to delete this shop."
+            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            shop.delete()
+            return Response({
+                "Message":"Shop deleted"
+            },status=status.HTTP_204_NO_CONTENT)
