@@ -5,6 +5,7 @@ from .serializers import ShopSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Shop
+from rest_framework.generics import ListAPIView
 
 # Create your views here.
 class ShopCreatedView(APIView):
@@ -63,3 +64,7 @@ class ShopDeletedView(APIView):
             return Response({
                 "Message":"Shop deleted"
             },status=status.HTTP_204_NO_CONTENT)
+        
+class ShopListView(ListAPIView):
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
