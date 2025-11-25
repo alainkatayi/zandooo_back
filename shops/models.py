@@ -2,9 +2,12 @@ from django.db import models
 from accounts.models import User
 from abstracts_models.time_stamped_model import TimeStampedModel
 from abstracts_models.soft_delete_model import SoftDeleteModel
+from manager.soft_delete_manager import SoftDeleteManager
 
 # Create your models here.
 class Shop(TimeStampedModel,SoftDeleteModel):
+    objects = SoftDeleteManager()
+
     name = models.CharField(max_length=100)
     description = models.TextField()
     opening_hours = models.TimeField()
