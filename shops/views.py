@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Shop
 from rest_framework.generics import ListAPIView
+from .pagination import ShopPagination
 
 # Create your views here.
 class ShopCreatedView(APIView):
@@ -68,3 +69,4 @@ class ShopDeletedView(APIView):
 class ShopListView(ListAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
+    pagination_class = ShopPagination
