@@ -7,12 +7,19 @@ from rest_framework import status
 from .models import Shop
 from rest_framework.generics import ListAPIView
 from .pagination import ShopPagination
-
+from rest_framework.decorators import action
+from rest_framework import viewsets, status
 # Create your views here.
 class ShopCreatedView(APIView):
     permission_classes  = [IsAuthenticated]
 
     def post(self,request):
+        # on verifie si l'utilisateur possede deja une boutique
+        if hasattr(request.user,'shop'):
+            return Response({
+                "Erreur": "Vous ne pouvez pas avoir plus d'une boutique",
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = ShopSerializer(data=request.data)
         if serializer.is_valid():
             shop = serializer.save(owner=request.user)

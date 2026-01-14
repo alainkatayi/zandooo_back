@@ -13,7 +13,7 @@ class Shop(TimeStampedModel,SoftDeleteModel):
     opening_hours = models.TimeField()
     closing_hours = models.TimeField()
     adress = models.CharField(max_length=255)
-    owner =models.ForeignKey (User, on_delete=models.CASCADE, related_name='shops')
+    owner =models.OneToOneField (User, on_delete=models.CASCADE, related_name='shop')
     logo = models.ImageField(upload_to='shop_logos/', null=True, blank=True)
     
 

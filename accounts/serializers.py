@@ -41,6 +41,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['email'] = user.email
+        token['has_shop'] = hasattr(user, 'shop')
         return token
     
     def validate(self, attrs):
@@ -59,6 +60,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                 'last_name': self.user.last_name,
                 'email': self.user.email,
                 'role': self.user.role,
+                'has_shop': hasattr(self.user, 'shop'),
                 'delivery_Agent_Profile': {
                     'adress': delivery_profile.adress,
                     'delivery_start_time': delivery_profile.delivery_start_time,
@@ -75,11 +77,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                     'id': self.user.id,
                     'username': self.user.username,
                     'email': self.user.email,
+                    'has_shop': hasattr(self.user, 'shop'),
+
                 }
             })
         return data
     
 class UserSerializer(serializers.ModelSerializer):
+    has_shop = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'role','has_shop']
+
+    def get_has_shop(self, obj):
+        return hasattr(obj, 'shop')
