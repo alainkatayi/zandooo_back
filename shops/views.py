@@ -77,3 +77,14 @@ class ShopListView(ListAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
     pagination_class = ShopPagination
+
+class MyShopView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        #on verifie si l'utilisateur à une boutique
+        if hasattr(request.user,'shop'):
+            serializer = ShopSerializer(request.user.shop)
+            return Response(serializer.data)
+        else:
+            return Response({"detail":"Aucune boutique trouvé. "}, status=status.HTTP_404_NOT_FOUND)
