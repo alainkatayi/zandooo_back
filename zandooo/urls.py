@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('shops/', include('shops.urls')),
+    path('products/', include('product.urls')),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),  # login
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) ##serve media files during development
