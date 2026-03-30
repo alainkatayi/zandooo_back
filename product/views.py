@@ -20,4 +20,16 @@ class ProductCreatedView(APIView):
                 "Product": ProductSerializer(product).data
             },status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+
+class ProductListView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        if hasattr(request.user,'shop'):
+            product = request.user.shop.store.all()
+            serializer = ProductSerializer(product, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({
+                "Erreur": "Aucune boutique ou Produit associée à cet utilisateur."
+            })
         
