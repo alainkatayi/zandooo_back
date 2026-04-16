@@ -51,6 +51,22 @@ class ProductUpdatedView(APIView):
                     "Error" : serializer.errors
                 }, status=status.HTTP_200_OK)
 
+class ProductDeletedView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        owner = product.shop.owner
+        if owner != request.user:
+            return Response({
+                "Message": "You do not have the right to delete this product"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            product.delete()
+            return Response({
+                "Message":"Product deleted"
+            }, status=status.HTTP_204_NO_CONTENT)
+
 
 # class pour la liste des produits d'une boutique
 class ProductListViewByStore(APIView):
