@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .serializers import ProductSerializer
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from .models import Product
 
 
-# Create your views here.
+# Class pour la création d'un produits
 class ProductCreatedView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -21,7 +22,9 @@ class ProductCreatedView(APIView):
             },status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
 
-class ProductListView(APIView):
+
+# class pour la liste des produits d'une boutique
+class ProductListViewByStore(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         if hasattr(request.user,'shop'):
