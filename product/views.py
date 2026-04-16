@@ -28,6 +28,29 @@ class ProductCreatedView(APIView):
                 "Erreur": "Vous n'avez pas de boutique. Veuiller ouvri une boutique pour commencer"
             }, status= status.HTTP_401_UNAUTHORIZED)
 
+# class pour la modification d'un produit
+class ProductUpdatedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        owner = product.shop.owner
+        if owner != request.user:
+            return Response({
+                "Message":"You do not have the right to modify this product information",
+            }, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            serializer = ProductSerializer(product, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "Message": "Product modified successfully"
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({
+                    "Error" : serializer.errors
+                }, status=status.HTTP_200_OK)
+
 
 # class pour la liste des produits d'une boutique
 class ProductListViewByStore(APIView):
