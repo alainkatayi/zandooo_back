@@ -77,6 +77,10 @@ class ProductListViewByStore(APIView):
         if hasattr(request.user,'shop'):
             product = request.user.shop.store.all()
             serializer = ProductSerializer(product, many=True)
+            if len(product) == 0:
+                return Response({
+                    "Message": "Aucun produit dans votre boutique"
+                })
             return Response(serializer.data)
         else:
             return Response({
