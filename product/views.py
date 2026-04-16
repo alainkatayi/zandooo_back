@@ -13,14 +13,20 @@ class ProductCreatedView(APIView):
 
     def post(self,request):
         serializer = ProductSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            product = serializer.save(shop=request.user.shop)
+        if hasattr(request.user,'shop'):
+                
+            if serializer.is_valid():
+                product = serializer.save(shop=request.user.shop)
+                return Response({
+                    "Message":"Product created successfully",
+                    "Product": ProductSerializer(product).data
+                },status=status.HTTP_201_CREATED)
+                
+            return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+        else:
             return Response({
-                "Message":"Product created successfully",
-                "Product": ProductSerializer(product).data
-            },status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+                "Erreur": "Vous n'avez pas de boutique. Veuiller ouvri une boutique pour commencer"
+            }, status= status.HTTP_401_UNAUTHORIZED)
 
 
 # class pour la liste des produits d'une boutique
