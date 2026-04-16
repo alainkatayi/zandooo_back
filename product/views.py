@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Product
+from rest_framework.generics import ListAPIView
+from .pagination import ProductPagination
 
 
 # Class pour la création d'un produits
@@ -80,4 +82,10 @@ class ProductListViewByStore(APIView):
             return Response({
                 "Erreur": "Aucune boutique ou Produit associée à cet utilisateur."
             })
+
+#class pour recuperer tout les produits disponible sur dans la bd
+class ProductListView(ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    pagination_class = ProductPagination
         
